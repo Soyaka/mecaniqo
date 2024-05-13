@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# Improved error handling
 function git_commit_and_push() {
   git add . || { echo "Error: Failed to add changes for commit."; return 1; }
 
@@ -20,5 +19,3 @@ function git_commit_and_push() {
 }
 
 git_commit_and_push || exit 1
-
-.PHONY: git-commit

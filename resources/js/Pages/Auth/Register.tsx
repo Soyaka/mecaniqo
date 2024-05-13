@@ -30,7 +30,7 @@ export default function Register() {
         <GuestLayout>
             <Head title="Register" />
 
-            <form onSubmit={submit}>
+            <form onSubmit={submit} className="mt-6 space-y-6   ">
                 <div>
                     <InputLabel htmlFor="name" value="Name" />
 
@@ -107,7 +107,7 @@ export default function Register() {
                         Already registered?
                     </Link>
 
-                    <PrimaryButton className="ms-4" disabled={processing}>
+                    <PrimaryButton className="ms-4 bg-blue-500 hover:bg-blue-700 " disabled={processing}>
                         Register
                     </PrimaryButton>
                 </div>
