@@ -1,3 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Set dark background for the entire application */
+body {
+    background-color: #1a202c;
+    /* Replace with your desired dark color */
+}
+
+/* Define your button style */
+.redButton {
+    @apply bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded;
+}
