@@ -3,10 +3,10 @@ export $(shell sed 's/=.*//' .env)
 
 print-env:
 	@echo $(DB_USERNAME)
-	@echo $(DB_PASSWORD)
 	@echo $(DB_DATABASE)
+	@echo $(DB_PASSWORD)
 
-build-db:
+docker-up:
 	@cd docker && docker-compose up -d
 
 start-db:

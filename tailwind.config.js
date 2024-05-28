@@ -4,8 +4,12 @@ export default {
     "./resources/**/*.blade.php",
     "./resources/**/*.js",
   ],
+
   darkMode: 'class',
-  corePlugins: { preflight: false },
+
+  corePlugins: {
+    preflight: true
+  },
 
   theme: {
     extend: {},
