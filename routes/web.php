@@ -1,6 +1,11 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\CarController;
+use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\RepairRequestController;
+use App\Http\Controllers\InvoiceController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -16,12 +21,32 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth'])->name('dashboard'); // TODO: must be authenticated and verified email !! 
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // Role-based routes
+    Route::middleware('role:admin')->group(function () {
+        Route::resource('users', UserController::class);
+        Route::resource('appointments', AppointmentController::class);
+        Route::resource('repair-requests', RepairRequestController::class);
+        Route::resource('invoices', InvoiceController::class);
+    });
+
+    Route::middleware('role:client')->group(function () {
+        Route::resource('cars', CarController::class);
+        Route::get('appointments', [AppointmentController::class, 'index'])->name('appointments.index');
+        Route::get('repair-requests', [RepairRequestController::class, 'index'])->name('repair-requests.index');
+        Route::get('invoices', [InvoiceController::class, 'index'])->name('invoices.index');
+    });
+
+    Route::middleware('role:mechanic')->group(function () {
+        Route::get('repair-requests', [RepairRequestController::class, 'index'])->name('repair-requests.index');
+        Route::post('repair-requests/{id}/update-status', [RepairRequestController::class, 'updateStatus'])->name('repair-requests.update-status');
+    });
 });
 
 require __DIR__.'/auth.php';
