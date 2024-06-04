@@ -1,31 +1,3 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* Set dark background for the entire application */
-body {
-    @apply bg-black/95 opacity-95 h-screen max-h-screen ;
-
-}
-
-/* Define your button style */
-.redButton {
-    @apply bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded cursor-pointer;
-}
-
-
-.bordered {
-    @apply border-2 border-red-600;
-}
-
-.inp{
-    @apply appearance-none rounded-lg relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm
-}
-
-.checkbox {
-    @apply h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 peer-aria-checked:bg-red-600;
-  }
-  
-  .checkbox:checked {
-    @apply bg-red-600 border-red-600;
-  }
