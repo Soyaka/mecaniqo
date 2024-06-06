@@ -1,5 +1,3 @@
-
-
 interface User {
     id: number;
     name: string;
@@ -8,11 +6,20 @@ interface User {
     created_at: string;
     updated_at: string;
     role: string;
-  }
-  
+}
+
+export interface AuthData {
+    user: User;
+    // Add other properties as needed
+}
 
 export type PageProps<T extends Record<string, unknown> = Record<string, unknown>> = T & {
-    auth: {
-        user: User;
-    };
+    auth: AuthData;
+    // Add other properties as needed
+};
+
+
+type UsersProps = {
+    clients: User[];
+    auth: PageProps<{ user: User }>; // Ensure auth includes user property
 };

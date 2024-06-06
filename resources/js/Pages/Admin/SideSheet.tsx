@@ -29,13 +29,13 @@ export function SheetDemo({ children, props  }: { children: React.ReactNode , pr
             <SheetTrigger asChild>
                 <div>{children}</div>
             </SheetTrigger>
-            <SheetContent>
+            <SheetContent side="left">
                 <SheetHeader>
                     <SheetTitle className="text-xl text-blue-950">Edit appointment</SheetTitle>
                     <SheetDescription>
                         Make changes to this appointment as you like . Click save when you're done.
                     </SheetDescription>
-                </SheetHeader>
+                </SheetHeader  >
                 <div className="grid gap-4 py-4">
                     <div className="grid grid-cols-4 items-center gap-4">
                         <Label htmlFor="staus" className="text-right">

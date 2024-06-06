@@ -1,6 +1,6 @@
 <?php
 
-
+// app/Http/Middleware/RoleMiddleware.php
 namespace App\Http\Middleware;
 
 use Closure;
@@ -15,8 +15,9 @@ class RoleMiddleware
         }
 
         $user = Auth::user();
+
         if (!in_array($user->role, $roles)) {
-            return redirect('/');
+            return redirect('/dashboard')->with('error', 'You do not have permission to access this resource.');
         }
 
         return $next($request);

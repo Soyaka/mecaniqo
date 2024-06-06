@@ -3,7 +3,6 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import { PageProps } from "@/types";
-import { Link } from "@inertiajs/react";
 import AdminDasboard from "@/Pages//Admin/Dasboard";
 import ClientDashboard from "@/Pages/Client/Dashbord";
 import MechanicDashboard from "@/Pages/Mechanic/Dashboard";

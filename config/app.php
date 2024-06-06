@@ -1,5 +1,5 @@
 <?php
-
+// config/app.php
 return [
 
     /*
@@ -122,5 +122,9 @@ return [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
-
+    // 'providers' => [
+    //     // Other Service Providers
+    
+    //     App\Providers\MiddlewareServiceProvider::class,
+    // ],
 ];

@@ -1,5 +1,6 @@
-<?php
 
+<?php
+// routes/web.php
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CarController;
@@ -21,8 +22,13 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
-})->middleware(['auth'])->name('dashboard'); // TODO: must be authenticated and verified email !! 
+})->middleware(['auth'])->name('dashboard');
 
+
+
+Route::middleware('role:admin')->get('/admin-only', function () {
+    return 'Admin Access Only';
+});
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -31,11 +37,12 @@ Route::middleware('auth')->group(function () {
     // Role-based routes
     Route::middleware('role:admin')->group(function () {
         Route::resource('users', UserController::class);
+        // Exclude create and store routes from resourceful routing
         Route::resource('appointments', AppointmentController::class);
         Route::resource('repair-requests', RepairRequestController::class);
         Route::resource('invoices', InvoiceController::class);
     });
-
+    
     Route::middleware('role:client')->group(function () {
         Route::resource('cars', CarController::class);
         Route::get('appointments', [AppointmentController::class, 'index'])->name('appointments.index');
