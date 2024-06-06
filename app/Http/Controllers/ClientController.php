@@ -15,10 +15,19 @@ class ClientController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $vehicles = $user->vehicles()->with('repairs')->get();
+        $vehicles = $user->vehicles()->with('repairRequests.repairs')->get();
         $invoices = $user->invoices()->get();
-        $repairs = Repair::whereIn('vehicle_id', $vehicles->pluck('id'))->get();
-
+        
+        // Collect all repair IDs from the repair requests of the user's vehicles
+        $repairIds = $vehicles->flatMap(function ($vehicle) {
+            return $vehicle->repairRequests->flatMap(function ($repairRequest) {
+                return $repairRequest->repairs->pluck('id');
+            });
+        })->unique();
+    
+        // Fetch the repairs using the collected IDs
+        $repairs = Repair::whereIn('id', $repairIds)->get();
+    
         return Inertia::render('Client/Overview', [
             'auth' => ['user' => $user],
             'vehicles' => $vehicles,
@@ -26,7 +35,6 @@ class ClientController extends Controller
             'repairs' => $repairs,
         ]);
     }
-
     public function edit(User $user)
     {
         return Inertia::render('Users/Edit', ['user' => $user]);

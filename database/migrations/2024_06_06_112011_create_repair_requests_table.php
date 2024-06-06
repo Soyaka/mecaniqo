@@ -12,6 +12,7 @@ class CreateRepairRequestsTable extends Migration
         Schema::create('repair_requests', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('vehicle_id')->nullable();
             $table->text('description');
             $table->string('status')->default('pending');
             $table->timestamps();
@@ -20,6 +21,8 @@ class CreateRepairRequestsTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('repair_requests');
+        Schema::table('repair_requests', function (Blueprint $table) {
+            $table->foreign('vehicle_id')->references('id')->on('vehicles')->onDelete('cascade');
+        });
     }
 }

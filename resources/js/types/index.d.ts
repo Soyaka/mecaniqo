@@ -31,14 +31,18 @@ type MechanicsProps = {
 };
 
 
-  export interface Vehicle {
-    id: string;
-    brand: string;
-    model: string;
-    fuelType: string;
-    registrationNumber: string;
-    photos: string[]; // URLs of the photos
-  }
+type Vehicle = {
+  id: number;
+  user_id: number;
+  brand: string;
+  model: string;
+  fuel_type: string;
+  registration_number: string;
+  photos: string[];
+  repair_requests: any[]; // You may want to create a specific type for repair requests
+  created_at: string; // This could be a Date object if you parse the string
+  updated_at: string; // This could be a Date object if you parse the string
+};
   
   export interface Repair {
     id: string;

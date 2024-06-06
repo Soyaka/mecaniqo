@@ -13,7 +13,7 @@ class RepairRequest extends Model
         'vehicle_id', 'description', 'status', 'date'
     ];
 
-    public function vehicle()
+    public function vehicles()
     {
         return $this->belongsTo(Vehicle::class);
     }
