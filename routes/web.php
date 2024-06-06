@@ -45,9 +45,9 @@ Route::middleware('auth')->group(function () {
     });
     
     Route::middleware('role:client')->group(function () {
-        Route::resource('cars', CarController::class);
+        Route::resource('vehicles', VehicleController::class);
         Route::get('appointments', [AppointmentController::class, 'index'])->name('appointments.index');
-        Route::get('repair-requests', [RepairRequestController::class, 'index'])->name('repair-requests.index');
+        Route::resource('repairs', RepairController::class);
         Route::get('invoices', [InvoiceController::class, 'index'])->name('invoices.index');
     });
 

@@ -29,3 +29,22 @@ type MechanicsProps = {
     mechanics: User[];
     auth: PageProps<{ user: User }>;
 };
+
+
+  export interface Vehicle {
+    id: string;
+    brand: string;
+    model: string;
+    fuelType: string;
+    registrationNumber: string;
+    photos: string[]; // URLs of the photos
+  }
+  
+  export interface Repair {
+    id: string;
+    vehicleId: string;
+    description: string;
+    status: 'en attente' | 'en cours' | 'terminée';
+    mechanic: string;
+  }
+  

@@ -84,7 +84,7 @@ export default function AdminNavbar(  {auth} : PageProps) {
     };
 
     return (
-        <div className="w-1/5 2xl:w-1/5 flex flex-col bg-gray-800 shadow-md border rounded-md">
+        <div className="min-w-[18%] max-w-[18%]  2xl:w-1/5 flex flex-col bg-gray-800 shadow-md border rounded-md">
             <div className="p-5 w-full flex items-center justify-center text-white">
                 {/* Place the site logo here */}
                 {/* {auth.user.name } */}
