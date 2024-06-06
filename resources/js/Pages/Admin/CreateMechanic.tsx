@@ -2,6 +2,7 @@ import React, { useState, ReactNode, ChangeEvent, FormEvent } from "react";
 import { Button } from "@/Components/ui/button";
 import { Input } from "@/Components/ui/input";
 import { Label } from "@/Components/ui/label";
+import { User } from "@/types";
 import {
     Sheet,
     SheetClose,
@@ -12,7 +13,7 @@ import {
     SheetTitle,
     SheetTrigger,
 } from "@/Components/ui/sheet";
-import { User } from "lucide-react";
+
 
 type FormData = {
     name: string;
@@ -24,16 +25,16 @@ type FormData = {
 
 type CreateUserProps = {
     children: ReactNode;
-    addUser: (newUser: FormData) => void;
+    addUser: (newUser: User) => void;
 };
 
-export default function CreateUser({ children, addUser }: CreateUserProps) {
+export default function CreateMechanic({ children, addUser }: CreateUserProps) {
     const [formData, setFormData] = useState<FormData>({
         name: "",
         email: "",
         password: "",
         password_confirmation: "",
-        role: "client",
+        role: "mechanic",
     });
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -59,7 +60,7 @@ export default function CreateUser({ children, addUser }: CreateUserProps) {
             return;
         }
 
-        const response = await fetch("/users", {
+        const response = await fetch("/mechanics", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

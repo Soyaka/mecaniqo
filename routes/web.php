@@ -7,6 +7,7 @@ use App\Http\Controllers\CarController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\RepairRequestController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\MechanicController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -37,7 +38,7 @@ Route::middleware('auth')->group(function () {
     // Role-based routes
     Route::middleware('role:admin')->group(function () {
         Route::resource('users', UserController::class);
-        // Exclude create and store routes from resourceful routing
+        Route::resource('mechanics', MechanicController::class);
         Route::resource('appointments', AppointmentController::class);
         Route::resource('repair-requests', RepairRequestController::class);
         Route::resource('invoices', InvoiceController::class);

@@ -23,3 +23,8 @@ type UsersProps = {
     clients: User[];
     auth: PageProps<{ user: User }>; // Ensure auth includes user property
 };
+
+
+type MechanicsProps = {
+    mechanics: User[];
+};

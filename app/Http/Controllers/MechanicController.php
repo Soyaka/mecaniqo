@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
@@ -7,22 +8,22 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Inertia\Inertia;
 
-class UserController extends Controller
+class MechanicController extends Controller
 {
     public function index()
     {
         $user = Auth::user();
-        $clients = User::where('role', 'client')->get();
+        $mechanics = User::where('role', 'mechanic')->get();
 
-        return Inertia::render('Admin/UsersViews', [
-            'clients' => $clients,
+        return Inertia::render('Admin/MechanicsViews', [
+            'mechanics' => $mechanics,
             'auth' => ['user' => $user],
         ]);
     }
 
     public function create()
     {
-        return Inertia::render('Users/Create');
+        return Inertia::render('Mechanics/Create');
     }
 
     public function store(Request $request)
@@ -41,36 +42,36 @@ class UserController extends Controller
             'role' => $validatedData['role'],
         ]);
 
-        return redirect()->route('users.index')->with('success', 'User registered successfully.');
+        return response()->json(['message' => 'Mechanic created successfully.']);
     }
 
-    public function edit(User $user)
+    public function edit(User $mechanic)
     {
-        return Inertia::render('Users/Edit', ['user' => $user]);
+        return Inertia::render('Mechanics/Edit', ['mechanic' => $mechanic]);
     }
 
-    public function update(Request $request, User $user)
+    public function update(Request $request, User $mechanic)
     {
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'email' => 'required|string|email|max:255|unique:users,email,' . $mechanic->id,
             'password' => 'nullable|string|min:8|confirmed',
             'role' => 'required|string|in:client,admin,mechanic',
         ]);
 
-        $user->update([
+        $mechanic->update([
             'name' => $validatedData['name'],
             'email' => $validatedData['email'],
-            'password' => $validatedData['password'] ? bcrypt($validatedData['password']) : $user->password,
+            'password' => $validatedData['password'] ? bcrypt($validatedData['password']) : $mechanic->password,
             'role' => $validatedData['role'],
         ]);
 
-        return redirect()->route('users.index')->with('success', 'User updated successfully.');
+        return redirect()->route('mechanics.index')->with('success', 'Mechanic updated successfully.');
     }
 
-    public function destroy(User $user)
+    public function destroy(User $mechanic)
     {
-        $user->delete();
-        return redirect()->route('users.index')->with('success', 'User deleted successfully.');
+        $mechanic->delete();
+        return redirect()->route('mechanics.index')->with('success', 'Mechanic deleted successfully.');
     }
 }
