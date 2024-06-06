@@ -28,13 +28,13 @@ export default function ClientNavBar({ auth }: PageProps) {
     const Pages: Page[] = [
         {
             name: "Dashboard",
-            link: "/dashboard",
+            link: "/client-dashboard",
             logo: <MdOutlineDashboard />,
             method: "get",
         },
         {
             name: "My Cars",
-            link: "/cars",
+            link: "/vehicles",
             logo: <FaCarSide />,
             method: "get",
         },

@@ -22,13 +22,13 @@ class Vehicle extends Model
         'photos' => 'array',
     ];
 
-    public function repairs()
-    {
-        return $this->hasMany(Repair::class);
-    }
-
     public function user()
     {
-        return $this->belongsTo(User::class); // Define the user relationship
+        return $this->belongsTo(User::class);
+    }
+
+    public function repairRequests()
+    {
+        return $this->hasMany(RepairRequest::class);
     }
 }

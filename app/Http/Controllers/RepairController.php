@@ -3,52 +3,55 @@
 namespace App\Http\Controllers;
 
 use App\Models\Repair;
-use App\Models\Vehicle;
 use Illuminate\Http\Request;
 
 class RepairController extends Controller
 {
     public function index()
     {
-        return Repair::with('vehicle')->get();
+        $repairs = Repair::with('repairRequest', 'mechanic')->get();
+        return view('repairs.index', compact('repairs'));
+    }
+
+    public function create()
+    {
+        return view('repairs.create');
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'vehicle_id' => 'required|exists:vehicles,id',
+        $validatedData = $request->validate([
+            'repair_request_id' => 'required|exists:repair_requests,id',
+            'mechanic_id' => 'required|exists:users,id',
             'description' => 'required|string',
-            'status' => 'required|in:en attente,en cours,terminée',
-            'mechanic' => 'required|string|max:255',
+            'cost' => 'required|numeric',
         ]);
 
-        $repair = Repair::create($request->all());
+        Repair::create($validatedData);
 
-        return response()->json($repair, 201);
+        return redirect()->route('repairs.index')->with('success', 'Repair created successfully.');
     }
 
-    public function show(Repair $repair)
+    public function edit(Repair $repair)
     {
-        return $repair->load('vehicle');
+        return view('repairs.edit', compact('repair'));
     }
 
     public function update(Request $request, Repair $repair)
     {
-        $request->validate([
-            'vehicle_id' => 'exists:vehicles,id',
-            'description' => 'string',
-            'status' => 'in:en attente,en cours,terminée',
-            'mechanic' => 'string|max:255',
+        $validatedData = $request->validate([
+            'description' => 'required|string',
+            'cost' => 'required|numeric',
         ]);
 
-        $repair->update($request->all());
+        $repair->update($validatedData);
 
-        return response()->json($repair, 200);
+        return redirect()->route('repairs.index')->with('success', 'Repair updated successfully.');
     }
 
     public function destroy(Repair $repair)
     {
         $repair->delete();
-        return response()->json(null, 204);
+        return redirect()->route('repairs.index')->with('success', 'Repair deleted successfully.');
     }
 }

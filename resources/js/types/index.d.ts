@@ -48,3 +48,19 @@ type MechanicsProps = {
     mechanic: string;
   }
   
+
+  export interface Invoice {
+    id: string;
+    repairId: string;
+    clientId: string;
+    amount: number;
+    date: string;
+  }
+  
+  interface OverViewProps {
+    auth: AuthData;
+    vehicles: Vehicle[];
+    invoices: Invoice[];
+    repairs: Repair[];
+  }
+  

@@ -16,6 +16,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+
     ];
 
     protected $hidden = [
@@ -34,12 +35,18 @@ class User extends Authenticatable
 
     public function invoices()
     {
-        return $this->hasMany(Invoice::class, 'client_id');
+        return $this->hasMany(Invoice::class, 'user_id');
     }
 
-    // If you want to directly associate repairs with clients
     public function repairs()
     {
-        return $this->hasManyThrough(Repair::class, Vehicle::class);
+        return $this->hasMany(Repair::class, 'mechanic_id');
     }
+
+    public function repairRequests()
+    {
+        return $this->hasMany(RepairRequest::class , 'client_id');
+    }
+
+
 }

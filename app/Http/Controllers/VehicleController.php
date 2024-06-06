@@ -1,15 +1,25 @@
 <?php
 
+
 namespace App\Http\Controllers;
 
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class VehicleController extends Controller
 {
     public function index()
     {
-        return Vehicle::all();
+        $user = Auth::user();
+        $vehicles = Auth::user()->vehicles;
+        return Inertia::render('Client/Vehicles', ['vehicles' => $vehicles, 'auth' => ['user' => $user]]);
+    }
+
+    public function create()
+    {
+        return Inertia::render('Vehicles/Create');
     }
 
     public function store(Request $request)
@@ -19,14 +29,16 @@ class VehicleController extends Controller
             'model' => 'required|string|max:255',
             'fuel_type' => 'required|string|max:255',
             'registration_number' => 'required|string|max:255|unique:vehicles',
-            'photos' => 'required|array',
+            'photos' => 'nullable|array',
             'photos.*' => 'file|mimes:jpeg,png,jpg,gif',
         ]);
 
         $photos = [];
-        foreach ($request->file('photos') as $photo) {
-            $path = $photo->store('vehicle_photos');
-            $photos[] = $path;
+        if ($request->hasFile('photos')) {
+            foreach ($request->file('photos') as $photo) {
+                $path = $photo->store('vehicle_photos');
+                $photos[] = $path;
+            }
         }
 
         $vehicle = Vehicle::create([
@@ -35,14 +47,15 @@ class VehicleController extends Controller
             'fuel_type' => $request->fuel_type,
             'registration_number' => $request->registration_number,
             'photos' => $photos,
+            'user_id' => Auth::id(),
         ]);
 
-        return response()->json($vehicle, 201);
+        return redirect()->route('vehicles.index')->with('success', 'Vehicle created successfully.');
     }
 
-    public function show(Vehicle $vehicle)
+    public function edit(Vehicle $vehicle)
     {
-        return $vehicle;
+        return Inertia::render('Vehicles/Edit', ['vehicle' => $vehicle]);
     }
 
     public function update(Request $request, Vehicle $vehicle)
@@ -56,23 +69,28 @@ class VehicleController extends Controller
             'photos.*' => 'file|mimes:jpeg,png,jpg,gif',
         ]);
 
+        $photos = $vehicle->photos;
         if ($request->hasFile('photos')) {
-            $photos = [];
             foreach ($request->file('photos') as $photo) {
                 $path = $photo->store('vehicle_photos');
                 $photos[] = $path;
             }
-            $vehicle->photos = $photos;
         }
 
-        $vehicle->update($request->only('brand', 'model', 'fuel_type', 'registration_number'));
+        $vehicle->update([
+            'brand' => $request->brand,
+            'model' => $request->model,
+            'fuel_type' => $request->fuel_type,
+            'registration_number' => $request->registration_number,
+            'photos' => $photos,
+        ]);
 
-        return response()->json($vehicle, 200);
+        return redirect()->route('vehicles.index')->with('success', 'Vehicle updated successfully.');
     }
 
     public function destroy(Vehicle $vehicle)
     {
         $vehicle->delete();
-        return response()->json(null, 204);
+        return redirect()->route('vehicles.index')->with('success', 'Vehicle deleted successfully.');
     }
 }

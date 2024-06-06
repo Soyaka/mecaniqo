@@ -8,27 +8,27 @@ use Illuminate\Database\Eloquent\Model;
 class Repair extends Model
 {
     use HasFactory;
-
     protected $fillable = [
-        'vehicle_id',
-        'user_id', 
-        'description',
-        'status',
-        'mechanic',
+        'repair_request_id', 'mechanic_id', 'description', 'cost',
     ];
 
-    public function vehicle()
+    public function repairRequest()
     {
-        return $this->belongsTo(Vehicle::class);
+        return $this->belongsTo(RepairRequest::class);
     }
 
-    public function user()
+    public function mechanic()
     {
-        return $this->belongsTo(User::class); 
+        return $this->belongsTo(User::class, 'mechanic_id');
     }
+
+    public function repairMaterials()
+    {
+        return $this->hasMany(RepairMaterial::class);
+    }
+
     public function invoice()
-{
-    return $this->hasOne(Invoice::class);
-}
-
+    {
+        return $this->hasOne(Invoice::class);
+    }
 }

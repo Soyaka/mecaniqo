@@ -10,11 +10,10 @@ class CreateRepairsTable extends Migration
 {
     Schema::create('repairs', function (Blueprint $table) {
         $table->id();
-        $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Add this line
-        $table->foreignId('vehicle_id')->constrained()->onDelete('cascade');
+        $table->foreignId('repair_request_id')->constrained()->onDelete('cascade');
+        $table->foreignId('mechanic_id')->constrained('users')->onDelete('cascade');
         $table->text('description');
-        $table->enum('status', ['en attente', 'en cours', 'terminée']);
-        $table->string('mechanic');
+        $table->decimal('cost', 10, 2);
         $table->timestamps();
     });
 }
@@ -25,3 +24,4 @@ class CreateRepairsTable extends Migration
         Schema::dropIfExists('repairs');
     }
 }
+

@@ -3,7 +3,8 @@
 // routes/web.php
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\CarController;
+use App\Http\Controllers\VehicleController;
+use App\Http\Controllers\ClientController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\RepairRequestController;
 use App\Http\Controllers\InvoiceController;
@@ -45,11 +46,13 @@ Route::middleware('auth')->group(function () {
     });
     
     Route::middleware('role:client')->group(function () {
+        Route::get('client-dashboard', [ClientController::class, 'index'])->name('client.dashboard');
         Route::resource('vehicles', VehicleController::class);
         Route::get('appointments', [AppointmentController::class, 'index'])->name('appointments.index');
         Route::resource('repairs', RepairController::class);
         Route::get('invoices', [InvoiceController::class, 'index'])->name('invoices.index');
     });
+
 
     Route::middleware('role:mechanic')->group(function () {
         Route::get('repair-requests', [RepairRequestController::class, 'index'])->name('repair-requests.index');
