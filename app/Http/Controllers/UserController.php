@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
@@ -34,14 +35,15 @@ class UserController extends Controller
             'role' => 'required|string|in:client,admin,mechanic',
         ]);
 
-        User::create([
+        $user = User::create([
             'name' => $validatedData['name'],
             'email' => $validatedData['email'],
             'password' => bcrypt($validatedData['password']),
             'role' => $validatedData['role'],
         ]);
+        return response()->json(['user' => $user]);
 
-        return redirect()->route('users.index')->with('success', 'User registered successfully.');
+
     }
 
     public function edit(User $user)

@@ -14,7 +14,6 @@ import {
     SheetTrigger,
 } from "@/Components/ui/sheet";
 
-
 type FormData = {
     name: string;
     email: string;
@@ -25,10 +24,13 @@ type FormData = {
 
 type CreateUserProps = {
     children: ReactNode;
-    addUser: (newUser: User) => void;
+    addmechanic: (newmechanic: User) => void;
 };
 
-export default function CreateMechanic({ children, addUser }: CreateUserProps) {
+export default function CreateMechanic({
+    children,
+    addmechanic,
+}: CreateUserProps) {
     const [formData, setFormData] = useState<FormData>({
         name: "",
         email: "",
@@ -48,7 +50,9 @@ export default function CreateMechanic({ children, addUser }: CreateUserProps) {
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
 
-        const csrfTokenElement = document.querySelector('meta[name="csrf-token"]');
+        const csrfTokenElement = document.querySelector(
+            'meta[name="csrf-token"]'
+        );
         if (!csrfTokenElement) {
             console.error("CSRF token not found");
             return;
@@ -60,23 +64,40 @@ export default function CreateMechanic({ children, addUser }: CreateUserProps) {
             return;
         }
 
-        const response = await fetch("/mechanics", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-TOKEN": csrfToken,
-            },
-            body: JSON.stringify(formData),
-        });
+        try {
+            const response = await fetch("/mechanics", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": csrfToken,
+                },
+                body: JSON.stringify(formData),
+            });
 
-        if (response.ok) {
-            const newUser = await response.json();
-            alert("User created successfully");
-            addUser(newUser ); // Add the new user to the list
-        } else {
-            const errors = await response.json();
-            alert("Failed to create user");
-            console.error("Error:", errors);
+            console.log("Response status:", response.status);
+            console.log("Response headers:", response.headers);
+
+            const contentType = response.headers.get("Content-Type");
+            if (
+                response.ok &&
+                contentType &&
+                contentType.includes("application/json")
+            ) {
+                const newMechanic: User = await response.json();
+                alert("User created successfully");
+                addmechanic(newMechanic);
+            } else {
+                if (contentType && contentType.includes("application/json")) {
+                    const errors = await response.json();
+                    console.error("Error:", errors);
+                } else {
+                    const errorText = await response.text();
+                    console.error("Error response is not JSON:", errorText);
+                }
+                alert("Failed to create user");
+            }
+        } catch (error) {
+            console.error("Network error:", error);
         }
     };
 
@@ -132,7 +153,10 @@ export default function CreateMechanic({ children, addUser }: CreateUserProps) {
                             />
                         </div>
                         <div className="grid grid-cols-4 items-center gap-4">
-                            <Label htmlFor="password_confirmation" className="text-right">
+                            <Label
+                                htmlFor="password_confirmation"
+                                className="text-right"
+                            >
                                 Confirm Password
                             </Label>
                             <Input

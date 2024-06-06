@@ -3,18 +3,18 @@ import { User, PageProps } from "@/types";
 import AdminLayout from "@/Layouts/AdminLayout";
 import MechanicMain from "./MechanicMain";
 
-type UsersProps = {
-    clients: User[];
+type MechanicsProps = {
+    mechanics: User[];
     auth: PageProps<{ user: User }>;
 };
 
-const MechanicViews: React.FC<UsersProps> = ({
+const MechanicViews: React.FC<MechanicsProps> = ({
     auth,
-    clients,
-}: UsersProps) => {
+    mechanics,
+}: MechanicsProps) => {
     return (
         <AdminLayout auth={auth}>
-            <MechanicMain clients={clients} auth={auth} />
+            <MechanicMain mechanics={mechanics} auth={auth} />
         </AdminLayout>
     );
 };

@@ -27,4 +27,5 @@ type UsersProps = {
 
 type MechanicsProps = {
     mechanics: User[];
+    auth: PageProps<{ user: User }>;
 };

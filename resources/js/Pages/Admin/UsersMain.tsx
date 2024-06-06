@@ -30,7 +30,7 @@ export default function UsersMain({ clients }: UsersProps) {
     };
 
     return (
-        <div className="w-full flex flex-col p-4 gap-6 justify-start rounded-md shadow-md bg-slate-100 border">
+        <div className="w-full flex flex-col p-4 gap-6 justify-start rounded-md shadow-md bg-slate-100 border ">
             <div className="flex w-full h-24 bg-white shadow rounded-lg items-center p-3 gap-20 justify-end ">
                 <input
                     type="text"
@@ -47,7 +47,7 @@ export default function UsersMain({ clients }: UsersProps) {
                     </button>
                 </CreateUser>
             </div>
-            <div className="w-full h-full flex flex-col gap-2 bg-white rounded-lg shadow p-3">
+            <div className="w-full h-full flex flex-col gap-2 bg-white rounded-lg shadow p-3 overflow-y-scroll">
                 {filteredClients.map((client) => (
                     <div key={client.id} className="w-full h-16 flex justify-between bg-white shadow rounded-lg items-center p-3 gap-20">
                         <div>

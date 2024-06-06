@@ -1,12 +1,12 @@
 import React from "react";
 import { Inertia } from "@inertiajs/inertia";
-import CreateUser from "./CreateUser";
-import { UsersProps } from "@/types";
-import { IoIosAddCircleOutline } from "react-icons/io";
 
-export default function MechanicsMain({ clients }: UsersProps) {
+import { MechanicsProps, User } from "@/types";
+import { IoIosAddCircleOutline } from "react-icons/io";
+import CreateMechanic from "./CreateMechanic";
+export default function MechanicsMain({ mechanics }: MechanicsProps) {
     const [search, setSearch] = React.useState("");
-    const [filteredMechanics, setFilteredMechanics] = React.useState(clients || []);
+    const [filteredMechanics, setFilteredMechanics] = React.useState(mechanics || []);
 
     const handleDelete = (id: number) => {
         if (confirm("Are you sure you want to delete this mechanic?")) {
@@ -18,19 +18,19 @@ export default function MechanicsMain({ clients }: UsersProps) {
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
         const searchTerm = e.target.value;
         setSearch(searchTerm);
-        const filtered = clients.filter((mechanic) =>
+        const filtered = mechanics.filter((mechanic) =>
             mechanic.name.toLowerCase().includes(searchTerm.toLowerCase())
         );
         setFilteredMechanics(filtered);
     };
 
-    const addMechanic = async(newMechanic : any) => {
+    const addMechanic = async(newMechanic : User) => {
         setFilteredMechanics(prevMechanics => [...prevMechanics, newMechanic]);
         window.location.reload();
     };
 
     return (
-        <div className="w-full flex flex-col p-4 gap-6 justify-start rounded-md shadow-md bg-slate-100 border">
+        <div className="w-full flex flex-col p-4 gap-6 justify-start rounded-md shadow-md bg-slate-100 border overflow-y-scroll">
             <div className="flex w-full h-24 bg-white shadow rounded-lg items-center p-3 gap-20 justify-end ">
                 <input
                     type="text"
@@ -39,13 +39,13 @@ export default function MechanicsMain({ clients }: UsersProps) {
                     value={search}
                     onChange={handleSearch}
                 />
-                <CreateUser addUser={addMechanic}>
+                <CreateMechanic addmechanic={addMechanic}>
                     <button
                         className="p-2 rounded-xl flex items-center border hover:bg-gray-800 hover:text-white border-gray-800 justify-center text-gray-800 font-semibold"
                     >
                         <IoIosAddCircleOutline size={25} /> Add New
                     </button>
-                </CreateUser>
+                </CreateMechanic>
             </div>
             <div className="w-full h-full flex flex-col gap-2 bg-white rounded-lg shadow p-3">
                 {filteredMechanics.map((mechanic) => (
