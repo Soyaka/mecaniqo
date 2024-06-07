@@ -7,6 +7,17 @@ use App\Models\Vehicle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage as FacadesStorage;
+use Illuminate\Support\Facades\URL;
+
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Validation\ValidationException;
 
 class VehicleController extends Controller
 {
@@ -24,7 +35,7 @@ class VehicleController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'brand' => 'required|string|max:255',
             'model' => 'required|string|max:255',
             'fuel_type' => 'required|string|max:255',
@@ -32,7 +43,13 @@ class VehicleController extends Controller
             'photos' => 'nullable|array',
             'photos.*' => 'file|mimes:jpeg,png,jpg,gif',
         ]);
-
+    
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+    
         $photos = [];
         if ($request->hasFile('photos')) {
             foreach ($request->file('photos') as $photo) {
@@ -40,7 +57,7 @@ class VehicleController extends Controller
                 $photos[] = $path;
             }
         }
-
+    
         $vehicle = Vehicle::create([
             'brand' => $request->brand,
             'model' => $request->model,
@@ -49,10 +66,9 @@ class VehicleController extends Controller
             'photos' => $photos,
             'user_id' => Auth::id(),
         ]);
-
-        return redirect()->route('vehicles.index')->with('success', 'Vehicle created successfully.');
+    
+        return response()->json($vehicle, 201);
     }
-
     public function edit(Vehicle $vehicle)
     {
         return Inertia::render('Vehicles/Edit', ['vehicle' => $vehicle]);

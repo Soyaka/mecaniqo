@@ -46,7 +46,8 @@ Route::middleware('auth')->group(function () {
     });
     
     Route::middleware('role:client')->group(function () {
-        Route::get('client-dashboard', [ClientController::class, 'index'])->name('client.dashboard');
+        Route::get('client-dashboard', ClientController::class,)->name('client.dashboard');
+        Route::post('vehicles', [VehicleController::class, 'store'])->name('vehicles.store');
         Route::resource('vehicles', VehicleController::class);
         Route::get('appointments', [AppointmentController::class, 'index'])->name('appointments.index');
         Route::resource('repairs', RepairController::class);

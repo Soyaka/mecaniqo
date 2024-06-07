@@ -1,82 +1,44 @@
-import React, { useState } from 'react';
-import { AuthData, Vehicle } from '@/types';
-import ClientLayout from '@/Layouts/ClientLayout';
-import { Inertia } from '@inertiajs/inertia';
+import React, { useState } from "react";
+import ClientLayout from "@/Layouts/ClientLayout";
+import { AuthData, Vehicle } from "@/types";
+import AddCarForm from "./AddCarForm";
+import VehiclesLister from "./VehiclesLister";
+import  CreateCarSheet  from "./CreateCarSheet";
+export default function Vehicles({
+    auth,
+    vehicles,
+}: {
+    auth: AuthData;
+    vehicles: Vehicle[];
+}) {
+    const [search, setSearch] = useState("");
+    const [filtredVehicles, setFiltredVehicles] = React.useState(
+        vehicles || []
+    );
 
-interface FormData {
-    brand: string;
-    model: string;
-    fuelType: string;
-    registrationNumber: string;
-    photos: File[];
-}
-
-export default function Vehicles({ auth, vehicles }: { auth: AuthData, vehicles: Vehicle[] }) {
-    console.log(vehicles);
-    const [formData, setFormData] = useState<FormData>({
-        brand: '',
-        model: '',
-        fuelType: '',
-        registrationNumber: '',
-        photos: [],
-    });
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const searchTerm = e.target.value;
+        setSearch(searchTerm);
+        const filtered = vehicles.filter((vehicle) =>
+            vehicle.brand.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        setFiltredVehicles(filtered);
     };
-
-    const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files) {
-            setFormData({ ...formData, photos: Array.from(e.target.files) });
-        }
-    };
-
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        const formDataToSend = new FormData();
-        formDataToSend.append('brand', formData.brand);
-        formDataToSend.append('model', formData.model);
-        formDataToSend.append('fuel_type', formData.fuelType);
-        formDataToSend.append('registration_number', formData.registrationNumber);
-        formData.photos.forEach((photo, index) => {
-            formDataToSend.append(`photos[${index}]`, photo);
-        });
-
-        Inertia.post('/vehicles', formDataToSend);
-    };
-
     return (
         <ClientLayout auth={auth}>
-            <div>
-                <h1>Vehicles</h1>
-                <form onSubmit={handleSubmit}>
-                    <label>
-                        Brand:
-                        <input type="text" name="brand" value={formData.brand} onChange={handleChange} />
-                    </label>
-                    <br />
-                    <label>
-                        Model:
-                        <input type="text" name="model" value={formData.model} onChange={handleChange} />
-                    </label>
-                    <br />
-                    <label>
-                        Fuel Type:
-                        <input type="text" name="fuelType" value={formData.fuelType} onChange={handleChange} />
-                    </label>
-                    <br />
-                    <label>
-                        Registration Number:
-                        <input type="text" name="registrationNumber" value={formData.registrationNumber} onChange={handleChange} />
-                    </label>
-                    <br />
-                    <label>
-                        Photos:
-                        <input type="file" name="photos" multiple onChange={handlePhotoChange} />
-                    </label>
-                    <br />
-                    <button type="submit">Add Vehicle</button>
-                </form>
+            <div className="w-full flex flex-col p-4 gap-6 justify-start rounded-md shadow-md bg-slate-100 border">
+                <div className="flex items-center justify-end max-h-[15%] w-full gap-6 bg-white rounded-lg shadow-md p-3 ">
+                    <input
+                        className="w-[15rem] rounded-full px-4 "
+                        type="text"
+                        placeholder="Search"
+                        onChange={handleSearch}
+                    />
+                    <CreateCarSheet />
+                </div>
+                <div className="w-full h-full ">
+                    <VehiclesLister vehicles={filtredVehicles} />
+                </div>
             </div>
         </ClientLayout>
     );

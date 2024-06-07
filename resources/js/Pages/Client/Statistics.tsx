@@ -23,16 +23,16 @@ export default function Statistics({
 
 export function MyVehicles({ vehicles }: { vehicles: Vehicle[] }) {
     return (
-        <div className="w-[40%] p-3 bg-white shadow-md rounded-lg overflow-y-scroll">
+        <div className=" custom-scrollbar w-[40%] p-3 bg-white shadow-md rounded-lg overflow-y-scroll">
             <h1 className="fixed w-64 p-1 bg-white text-lg font-light text-slate-600">
                 My Vehicles
             </h1>
             <div className="w-full relative top-8">
                 <Separator className="w-[90%] mx-3 my-2" />
-                <div className="flex flex-row gap-4  p-1 rounded border-green-900">
+                <div className="flex flex-col gap-4  p-1 rounded border-green-900">
                     {vehicles.map((vehicle) => (
                         <div key={vehicle.id} className="flex flex-row items-center gap-4">
-                            <img src={`/storage/${vehicle.photos[0]}`} 
+                            <img src={`/storage/app/${vehicle.photos[0]}`} 
                             className="w-12 h-12 rounded-lg" />
                             <h1 className="text-gray-800 font-bold">{vehicle.brand}</h1>
                             <div className="flex flex-row gap-4 items-center">
@@ -50,7 +50,7 @@ export function MyVehicles({ vehicles }: { vehicles: Vehicle[] }) {
 
 export function MyInvoices() {
     return (
-        <div className="w-[60%] p-3 bg-white shadow-md rounded-lg overflow-y-scroll">
+        <div className=" custom-scrollbar w-[60%] p-3 bg-white shadow-md rounded-lg overflow-y-scroll">
             <h1 className="text-lg font-light text-slate-600">My Invoices</h1>
             <Separator className="w-[90%] mx-3 my-2" />
         </div>
@@ -59,7 +59,7 @@ export function MyInvoices() {
 
 export function MyAppointments() {
     return (
-        <div className="w-full min-h-full p-3 bg-white shadow-md rounded-lg overflow-y-scroll">
+        <div className=" custom-scrollbar w-full min-h-full p-3 bg-white shadow-md rounded-lg overflow-y-scroll">
             <h1 className="text-lg font-light text-slate-600">My Appointments</h1>
             <Separator className="w-[90%] mx-3 my-2" />
         </div>
