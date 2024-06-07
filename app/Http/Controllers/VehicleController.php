@@ -53,7 +53,7 @@ class VehicleController extends Controller
         $photos = [];
         if ($request->hasFile('photos')) {
             foreach ($request->file('photos') as $photo) {
-                $path = $photo->store('vehicle_photos');
+                $path = $photo->store('public/vehicle_photos');
                 $photos[] = $path;
             }
         }
@@ -67,7 +67,7 @@ class VehicleController extends Controller
             'user_id' => Auth::id(),
         ]);
     
-        return response()->json($vehicle, 201);
+        return Inertia::render('Vehicles', ['vehicle' => $vehicle]);
     }
     public function edit(Vehicle $vehicle)
     {

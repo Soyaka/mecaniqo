@@ -15,17 +15,15 @@ class ClientController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $vehicles = $user->vehicles()->with('repairRequests.repairs')->get();
+        $vehicles = $user->vehicles()->with('repairRequests.repair')->get();
         $invoices = $user->invoices()->get();
         
-        // Collect all repair IDs from the repair requests of the user's vehicles
         $repairIds = $vehicles->flatMap(function ($vehicle) {
             return $vehicle->repairRequests->flatMap(function ($repairRequest) {
-                return $repairRequest->repairs->pluck('id');
+                return $repairRequest->repair ? $repairRequest->repair->id : null;
             });
-        })->unique();
+        })->unique()->filter();
     
-        // Fetch the repairs using the collected IDs
         $repairs = Repair::whereIn('id', $repairIds)->get();
     
         return Inertia::render('Client/Overview', [

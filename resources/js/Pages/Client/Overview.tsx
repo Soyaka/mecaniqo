@@ -4,6 +4,7 @@ import { OverViewProps } from '@/types'
 import Authenticated from '@/Layouts/AuthenticatedLayout'
 import Statistics from './Statistics'
 export default function Overview({ auth, vehicles, invoices, repairs}: OverViewProps) {
+  console.log(auth)
   return (
     <Authenticated
       user={auth.user}

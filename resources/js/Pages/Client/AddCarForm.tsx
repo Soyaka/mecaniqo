@@ -1,6 +1,10 @@
+//Not used for now , it was used in previues versions
+
+// @ts-nocheck
 import React, { useState } from "react";
 import ImageUpload from "./ImageUpload";
-
+import { Toast } from "primereact/toast";
+import {Inertia} from "@inertiajs/inertia";
 interface FormDataState {
     brand: string;
     model: string;
@@ -74,15 +78,9 @@ export default function AddCarForm() {
                     throw new Error('Expected JSON response');
                 }
             }
+            window.location.reload();
+            console.log("Response:", response);
 
-            const contentType = response.headers.get("content-type");
-            if (contentType && contentType.includes("application/json")) {
-                const data = await response.json();
-                console.log("Response:", data);
-            } else {
-                console.error("Expected JSON response but got:", contentType);
-                throw new Error("Expected JSON response");
-            }
         } catch (error) {
             console.error("Error:", error);
         }
@@ -90,7 +88,7 @@ export default function AddCarForm() {
 
     return (
 
-            <div className="flex flex-col items-center justify-center">
+            <div className="flex flex-col h-full  items-center justify-center overflow-y-scroll">
                 <h1 className="text-3xl font-bold mb-4">Vehicles</h1>
                 <div className="w-full max-w-2xl">
                     <form onSubmit={handleSubmit}>

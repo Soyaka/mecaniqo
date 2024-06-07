@@ -1,5 +1,4 @@
-import { useEffect } from 'react';
-import { Inertia } from '@inertiajs/inertia';
+
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import { PageProps } from "@/types";
@@ -9,13 +8,6 @@ import MechanicDashboard from "@/Pages/Mechanic/Dashboard";
 export default function Dashboard({ auth }: PageProps) {
     const userRole = auth.user.role;
 
-    useEffect(() => {
-        if (userRole === 'client') {
-            Inertia.visit('/client-dashboard');
-            return 
-        }
-    }, [userRole]);
-
     const renderContent = () => {
         switch (userRole) {
             case "admin":
@@ -23,7 +15,7 @@ export default function Dashboard({ auth }: PageProps) {
             case "mechanic":
                 return <MechanicDashboard auth={auth} />;
             default:
-                return <div>What is this? Men, that's weird.</div>;
+                return <div>What is this? Men, that's weird. {userRole}</div>;
         }
     };
 

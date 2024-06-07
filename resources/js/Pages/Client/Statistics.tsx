@@ -23,26 +23,42 @@ export default function Statistics({
 
 export function MyVehicles({ vehicles }: { vehicles: Vehicle[] }) {
     return (
-        <div className=" custom-scrollbar w-[40%] p-3 bg-white shadow-md rounded-lg overflow-y-scroll">
-            <h1 className="fixed w-64 p-1 bg-white text-lg font-light text-slate-600">
-                My Vehicles
-            </h1>
-            <div className="w-full relative top-8">
+        <div className=" custom-scrollbar w-[40%]  bg-white shadow-md rounded-lg overflow-y-scroll">
+            <div className="fixed  flex  flex-col items-center  z-10 bg-white">
+                <h1 className=" w-96 mt-2 ml-3 text-lg font-light text-slate-600">
+                    My Vehicles
+                </h1>
                 <Separator className="w-[90%] mx-3 my-2" />
-                <div className="flex flex-col gap-4  p-1 rounded border-green-900">
-                    {vehicles.map((vehicle) => (
-                        <div key={vehicle.id} className="flex flex-row items-center gap-4">
-                            <img src={`/storage/app/${vehicle.photos[0]}`} 
-                            className="w-12 h-12 rounded-lg" />
-                            <h1 className="text-gray-800 font-bold">{vehicle.brand}</h1>
-                            <div className="flex flex-row gap-4 items-center">
-                                <span className="text-gray-500 text-sm">{vehicle.model}</span>
-                                <span className="text-gray-500 text-sm">{vehicle.registration_number}</span>
-                                <span className="text-gray-500 text-sm">{vehicle.fuel_type}</span>
-                            </div>
+            </div>
+            <div className="relative top-12 flex flex-col gap-4  p-3 rounded border-green-900">
+                {vehicles.map((vehicle) => (
+                    <div
+                        key={vehicle.id}
+                        className="flex flex-row items-center gap-4"
+                    >
+                        <img
+                            src={`storage/${vehicle.photos[0].replace(
+                                "public/",
+                                ""
+                            )}`}
+                            className="w-12 h-12 rounded-lg bg-cover "
+                        />
+                        <h1 className="text-gray-800 font-bold">
+                            {vehicle.brand}
+                        </h1>
+                        <div className="flex flex-row gap-4 items-center">
+                            <span className="text-gray-500 text-sm">
+                                {vehicle.model}
+                            </span>
+                            <span className="text-gray-500 text-sm">
+                                {vehicle.registration_number}
+                            </span>
+                            <span className="text-gray-500 text-sm">
+                                {vehicle.fuel_type}
+                            </span>
                         </div>
-                    ))}
-                </div>
+                    </div>
+                ))}
             </div>
         </div>
     );
@@ -60,7 +76,9 @@ export function MyInvoices() {
 export function MyAppointments() {
     return (
         <div className=" custom-scrollbar w-full min-h-full p-3 bg-white shadow-md rounded-lg overflow-y-scroll">
-            <h1 className="text-lg font-light text-slate-600">My Appointments</h1>
+            <h1 className="text-lg font-light text-slate-600">
+                My Appointments
+            </h1>
             <Separator className="w-[90%] mx-3 my-2" />
         </div>
     );
