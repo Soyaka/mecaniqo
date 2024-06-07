@@ -79,3 +79,14 @@ type Vehicle = {
     date: Date;
     vehicle?: Vehicle;
   };
+
+  type RepairRequest = {
+    id: string;
+    vehicle_id: string;
+    user_id: string;
+    description: string;
+    status: string;
+    date: Date;
+    vehicle?: Vehicle;
+    user?: User;
+  };

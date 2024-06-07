@@ -7,23 +7,40 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class RepairRequestController extends Controller
 {
-    public function index()
+public function index()
     {
         $user = Auth::user();
-        $appointments = RepairRequest::with('vehicle')
+        $vehicles = Auth::user()->vehicles;
+        $appointments = RepairRequest::with(['vehicle', 'user']) // Eager load the user
             ->whereHas('vehicle', function ($query) use ($user) {
                 $query->where('user_id', $user->id);
             })
             ->get();
     
         return Inertia::render('Client/Appointments', [
+            'vehicles' => $vehicles,
             'appointments' => $appointments,
             'auth' => ['user' => $user],
         ]);
     }
+
+    public function allRepairRequests()
+    {
+        $today = Carbon::today()->toDateString();
+        $repair_requests = RepairRequest::whereDate('created_at', $today)
+                                        ->with('user', 'vehicle')
+                                        ->get();
+
+        return response()->json([
+            'repair_requests' => $repair_requests
+        ]);
+    }
+
+
     public function create()
     {
         return view('repair_requests.create');
@@ -31,7 +48,8 @@ class RepairRequestController extends Controller
 
     public function store(Request $request)
     {
-        // Validate the request data
+
+        
         $validated = $request->validate([
             'vehicle_id' => 'required|integer|exists:vehicles,id',
             'description' => 'required|string|max:255',
@@ -39,7 +57,7 @@ class RepairRequestController extends Controller
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'date_time' => 'required|date_format:Y-m-d H:i:s',
         ]);
-
+    
         // Handle image uploads
         $imagePaths = [];
         if ($request->has('images')) {
@@ -48,18 +66,19 @@ class RepairRequestController extends Controller
                 $imagePaths[] = $path;
             }
         }
-
+    
         // Create the appointment
-        $appointment = Appointment::create([
+        $appointment = RepairRequest::create([
+            'user_id' => Auth::user()->id,
             'vehicle_id' => $validated['vehicle_id'],
             'description' => $validated['description'],
             'images' => json_encode($imagePaths),
-            'date_time' => $validated['date_time'],
+            'date' => $validated['date_time'],
             'status' => 'pending', // Default status
         ]);
-
+    
         // Return a response (e.g., redirect to appointments index)
-        return redirect()->route('appointments.index')->with('success', 'Appointment created successfully.');
+        return response()->json(['message' => 'Appointment created successfully.', 'appointment' => $appointment]);
     }
 
     public function edit(RepairRequest $repairRequest)

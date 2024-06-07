@@ -27,8 +27,8 @@ export default function ClientNavBar({ auth }: PageProps) {
 
     const Pages: Page[] = [
         {
-            name: "Dashboard",
-            link: "/dashboard",
+            name: "Overview",
+            link: "/overview",
             logo: <MdOutlineDashboard />,
             method: "get",
         },

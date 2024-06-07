@@ -12,7 +12,7 @@ import {
     SheetTrigger,
 } from "@/Components/ui/sheet";
 
-
+import { RepairRequest } from "@/types";
 interface Appointment {
     id: number;
     name: string;
@@ -23,7 +23,7 @@ interface Appointment {
 }
 
 
-export function SheetDemo({ children, props  }: { children: React.ReactNode , props: Appointment }) {
+export function SheetDemo({ children, RepReq  }: { children: React.ReactNode , RepReq: RepairRequest}) {
     return (
         <Sheet>
             <SheetTrigger asChild>

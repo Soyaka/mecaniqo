@@ -17,7 +17,7 @@ class RoleMiddleware
         $user = Auth::user();
 
         if (!in_array($user->role, $roles)) {
-            return redirect('/dashboard')->with('error', 'You do not have permission to access this resource.');
+            return redirect('/');
         }
 
         return $next($request);

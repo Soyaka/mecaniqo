@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use App\Models\RepairRequest;
 use Inertia\Inertia;
 
 class UserController extends Controller
@@ -14,6 +15,7 @@ class UserController extends Controller
     {
         $user = Auth::user();
         $clients = User::where('role', 'client')->get();
+
         return Inertia::render('Admin/UsersViews', [
             'clients' => $clients,
             'auth' => ['user' => $user],
@@ -24,6 +26,8 @@ class UserController extends Controller
     {
         return Inertia::render('Users/Create');
     }
+
+    
 
     public function store(Request $request)
     {

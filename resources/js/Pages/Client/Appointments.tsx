@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
 import ClientLayout from "@/Layouts/ClientLayout";
-import { AuthData, Appointment } from "@/types";
-import CreateCarSheet from "./CreateCarSheet";
+import { AuthData, Appointment, Vehicle } from "@/types";
+import CreateAppointmentSheet from "./create_app_sheet";
 import AppointmentCard from "./AppointmentCard";
 
 interface AppointmentsProps {
     auth: AuthData;
     appointments: Appointment[];
+    vehicles: Vehicle[];
 }
 
-export default function Appointments({ auth, appointments }: AppointmentsProps) {
+export default function Appointments({ auth, appointments, vehicles }: AppointmentsProps) {
+    console.log(appointments);
     const [filteredAppointments, setFilteredAppointments] = useState<Appointment[]>(appointments || []);
     const [filters, setFilters] = useState({
         date: "",
@@ -46,15 +48,17 @@ export default function Appointments({ auth, appointments }: AppointmentsProps) 
                         <option value="accepted">Accepted</option>
                         {/* Add more status options as needed */}
                     </select>
-                    <CreateCarSheet />
+                    <CreateAppointmentSheet vehicles={vehicles} />
                 </div>
-                <div className="w-full h-full grid grid-cols-3 p-3 bg-white rounded-md shadow-md">
+                <div className="custom-scrollbar w-full h-full overflow-y-scroll  bg-white rounded-md shadow-md">
                     {filteredAppointments.length === 0 ? (
                         <p className="text-center text-gray-500">No appointments found.</p>
                     ) : (
-                        filteredAppointments.map(appointment => (
-                            <AppointmentCard key={appointment.id} {...appointment} />
-                        ))
+                        <div className="grid grid-cols-3 p-3 gap-4"> {/* Add this div */}
+                            {filteredAppointments.map(appointment => (
+                                <AppointmentCard key={appointment.id} {...appointment} />
+                            ))}
+                        </div>
                     )}
                 </div>
             </div>

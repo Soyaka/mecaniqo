@@ -38,16 +38,19 @@ Route::middleware('auth')->group(function () {
         
         Route::resource('users', UserController::class);
         Route::resource('mechanics', MechanicController::class);
-        Route::resource('repair-requests', RepairRequestController::class);
+        Route::resource('repair-requests', RepairRequestController::class,  [
+            'only' => ['index', 'store', 'show', 'edit', 'update', 'destroy',  ],
+        ] );
+        Route::get('/all-repair-requests', [RepairRequestController::class, 'allRepairRequests'])->name('all-repair-requests');
         Route::resource('invoices', InvoiceController::class);
     });
     
     Route::middleware('role:client')->group(function () {
-        Route::get('/dashboard', [ClientController::class, 'index'])->name('client.dashboard');
+        Route::get('/overview', [ClientController::class, 'index'])->name('overview');
+
         Route::resource('/vehicles', VehicleController::class);
         Route::resource('/appointments', RepairRequestController::class)->names([
             'index' => 'appointments.index',
-            'create' => 'appointments.create',
             'store' => 'appointments.store',
             'show' => 'appointments.show',
             'edit' => 'appointments.edit',
