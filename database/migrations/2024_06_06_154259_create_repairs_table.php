@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 class CreateRepairsTable extends Migration
 {
     public function up()
-{
+    {
     Schema::create('repairs', function (Blueprint $table) {
         $table->id();
         $table->foreignId('repair_request_id')->constrained()->onDelete('cascade');
@@ -16,7 +16,9 @@ class CreateRepairsTable extends Migration
         $table->decimal('cost', 10, 2);
         $table->timestamps();
     });
-}
+    }
+
+
 
 
     public function down()

@@ -13,6 +13,11 @@ class RepairController extends Controller
         return view('repairs.index', compact('repairs'));
     }
 
+    public function getAllRepairs(){
+        $repairs = Repair::with('repairRequest', 'mechanic')->get();
+        return $repairs;
+    }
+
     public function create()
     {
         return view('repairs.create');
@@ -21,10 +26,11 @@ class RepairController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'repair_request_id' => 'required|exists:repair_requests,id',
-            'mechanic_id' => 'required|exists:users,id',
+            'repair_request_id' => 'nullable|exists:repair_requests,id',
+            'mechanic_id' => 'nullable|exists:users,id',
             'description' => 'required|string',
             'cost' => 'required|numeric',
+            'status' => 'required|string|in:pending,in_progress,completed',
         ]);
 
         Repair::create($validatedData);

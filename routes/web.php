@@ -5,6 +5,9 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\RepairRequestController;
+use App\Http\Controllers\RepairController;
+use App\Http\Controllers\RepairMaterialController;
+
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\MechanicController;
 use Illuminate\Foundation\Application;
@@ -30,24 +33,34 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Role-based routes
+
+
+
+
+
     Route::middleware('role:admin')->group(function () {
         Route::get('/dashboard', function () {
             return Inertia::render('Dashboard');
         })->middleware(['auth'])->name('dashboard');
-        
+
         Route::resource('users', UserController::class);
         Route::resource('mechanics', MechanicController::class);
-        Route::resource('repair-requests', RepairRequestController::class,  [
-            'only' => ['index', 'store', 'show', 'edit', 'update', 'destroy',  ],
-        ] );
+        Route::resource('repair-requests', RepairRequestController::class, [
+            'only' => ['index', 'store', 'show', 'edit', 'update', 'destroy', 'updateStatus'],
+        ]);
         Route::get('/all-repair-requests', [RepairRequestController::class, 'allRepairRequests'])->name('all-repair-requests');
         Route::resource('invoices', InvoiceController::class);
+
+        Route::put('/repair-requests/{id}/update-status', [RepairRequestController::class, 'updateStatus'])->name('repair-requests.update-status');
     });
-    
+
+
+
+
+
+
     Route::middleware('role:client')->group(function () {
         Route::get('/overview', [ClientController::class, 'index'])->name('overview');
-
         Route::resource('/vehicles', VehicleController::class);
         Route::resource('/appointments', RepairRequestController::class)->names([
             'index' => 'appointments.index',
@@ -61,10 +74,17 @@ Route::middleware('auth')->group(function () {
         Route::get('/invoices', [InvoiceController::class, 'index'])->name('invoices.index');
     });
 
+
+
+
+
+
+
+
     Route::middleware('role:mechanic')->group(function () {
         Route::get('/repair-requests', [RepairRequestController::class, 'index'])->name('repair-requests.index');
-        Route::post('/repair-requests/{id}/update-status', [RepairRequestController::class, 'updateStatus'])->name('repair-requests.update-status');
+        // Route::put('/repair-requests/{id}/update-status', [RepairRequestController::class, 'updateStatus'])->name('repair-requests.update-status');
     });
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

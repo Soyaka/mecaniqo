@@ -47,8 +47,8 @@ const AppointRow = ({ id, user, description, status, date } : RepairRequest) => 
                 <div>
                     {status === "pending" ? (
                         <span className="text-red-500 text-sm">Pending</span>
-                    ) : status === "done" ? (
-                        <span className="text-green-500 text-sm">Done</span>
+                    ) : status === "accepted" ? (
+                        <span className="text-green-500 text-sm">Accepted</span>
                     ) : (
                         <span className="text-yellow-500 text-sm">In Progress</span>
                     )}

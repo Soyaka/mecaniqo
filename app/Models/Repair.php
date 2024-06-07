@@ -9,7 +9,7 @@ class Repair extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'repair_request_id', 'mechanic_id', 'description', 'cost',
+        'repair_request_id', 'mechanic_id', 'description', 'cost', 'status',
     ];
 
     public function repairRequest()
