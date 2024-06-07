@@ -25,10 +25,13 @@
   },
   "dependencies": {
     "@inertiajs/inertia-react": "^0.8.1",
+    "@internationalized/date": "^3.5.4",
+    "@nextui-org/react": "^2.4.1",
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-separator": "^1.0.3",
     "@radix-ui/react-slot": "^1.0.2",
+    "@react-aria/i18n": "^3.11.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "lucide-react": "^0.383.0",

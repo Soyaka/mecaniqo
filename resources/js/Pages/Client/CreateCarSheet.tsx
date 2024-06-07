@@ -181,7 +181,7 @@ export default function CreateCarSheet() {
               </div>
               <SheetFooter>
                 <SheetClose asChild>
-                  <Button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                  <Button type="submit" className="bg-green-800 hover:bg-green-800/75 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                     Save changes
                   </Button>
                 </SheetClose>
