@@ -90,3 +90,13 @@ type Vehicle = {
     vehicle?: Vehicle;
     user?: User;
   };
+
+
+  type RepairProps = {
+    id: string;
+    vehicleId: string;
+    description: string;
+    status: string;
+    mechanic: User;
+    repairRequests: RepairRequest;
+  };

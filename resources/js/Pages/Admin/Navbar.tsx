@@ -47,7 +47,7 @@ const Pages: Page[] = [
     {
         name: "Operations",
         logo: <FaNetworkWired />,
-        href: "/operations",
+        href: "/repairs",
         current: false,
     },
 ];

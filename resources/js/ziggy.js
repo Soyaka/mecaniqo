@@ -141,7 +141,7 @@ const Ziggy = {
         },
         "repair-requests.update-status": {
             uri: "repair-requests/{id}/update-status",
-            methods: ["POST"],
+            methods: ["POST", "HEAD", "PUT"],
             parameters: ["id"],
         },
         register: { uri: "register", methods: ["GET", "HEAD"] },

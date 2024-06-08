@@ -4,16 +4,29 @@ namespace App\Http\Controllers;
 
 use App\Models\Repair;
 use Illuminate\Http\Request;
+use App\Models\RepairRequest;
+use Inertia\Inertia;
+use App\Models\User;
 
 class RepairController extends Controller
 {
     public function index()
-    {
+    { // fetch accepted_repair_request with thier vihcle and user
+        $acceptedRepairRequests = RepairRequest::with('vehicle', 'user')->where('status', 'accepted')->get();
+        $mechanics = User::where('role', 'mechanic')->get();
+        $user = auth()->user();
+        // f
         $repairs = Repair::with('repairRequest', 'mechanic')->get();
-        return view('repairs.index', compact('repairs'));
+        return Inertia::render('Admin/Repairs', [
+            'repairs' => $repairs,
+            'auth' => ['user' => $user],
+            'mechanics' => $mechanics,
+            'acceptedRepairRequests' => $acceptedRepairRequests
+        ]);
     }
 
-    public function getAllRepairs(){
+    public function getAllRepairs()
+    {
         $repairs = Repair::with('repairRequest', 'mechanic')->get();
         return $repairs;
     }
@@ -35,7 +48,7 @@ class RepairController extends Controller
 
         Repair::create($validatedData);
 
-        return redirect()->route('repairs.index')->with('success', 'Repair created successfully.');
+        return response()->json(['message' => 'Repair created successfully.']);
     }
 
     public function edit(Repair $repair)

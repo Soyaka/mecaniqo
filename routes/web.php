@@ -41,17 +41,29 @@ Route::middleware('auth')->group(function () {
     Route::middleware('role:admin')->group(function () {
         Route::get('/dashboard', function () {
             return Inertia::render('Dashboard');
-        })->middleware(['auth'])->name('dashboard');
+        })->name('dashboard');
 
         Route::resource('users', UserController::class);
         Route::resource('mechanics', MechanicController::class);
         Route::resource('repair-requests', RepairRequestController::class, [
-            'only' => ['index', 'store', 'show', 'edit', 'update', 'destroy', 'updateStatus'],
+            'only' => ['index', 'store', 'show', 'edit', 'update', 'destroy',],
         ]);
+        Route::patch('repair-requests/{repair_request}/update-status', [RepairRequestController::class, 'updateStatus'])
+            ->name('repair-requests.updateStatus');
         Route::get('/all-repair-requests', [RepairRequestController::class, 'allRepairRequests'])->name('all-repair-requests');
         Route::resource('invoices', InvoiceController::class);
-
-        Route::put('/repair-requests/{id}/update-status', [RepairRequestController::class, 'updateStatus'])->name('repair-requests.update-status');
+        Route::resource('repair-materials', RepairMaterialController::class);
+        Route::resource('/repairs', RepairController::class)->names([
+            'index' => 'repairs.index', // Add this line to specify the custom name for the index route
+            'store' => 'repairs.store',
+            'show' => 'repairs.show',
+            'edit' => 'repairs.edit',
+            'update' => 'repairs.update',
+            'destroy' => 'repairs.destroy',
+            'create' => 'repairs.create',
+            'new' => 'repairs.new',
+            'updateStatus' => 'repairs.updateStatus',
+        ]);
     });
 
 
@@ -70,7 +82,7 @@ Route::middleware('auth')->group(function () {
             'update' => 'appointments.update',
             'destroy' => 'appointments.destroy',
         ]);
-        Route::resource('/repairs', RepairController::class);
+        // Route::resource('/repairs', RepairController::class);
         Route::get('/invoices', [InvoiceController::class, 'index'])->name('invoices.index');
     });
 

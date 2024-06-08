@@ -47,35 +47,29 @@ class RepairRequestController extends Controller
 
     public function allRepairRequests()
     {
-        $today = Carbon::today()->toDateString();
-        $repair_requests = RepairRequest::whereDate('created_at', $today)
-            ->with('user', 'vehicle')
-            ->get();
-
+        // $today = Carbon::today()->toDateString();
+        // $repair_requests = RepairRequest::whereDate('created_at', $today)
+        //     ->with('user', 'vehicle')
+        //     ->get();
+        $repair_requests = RepairRequest::with('user', 'vehicle')->get();
         return response()->json([
             'repair_requests' => $repair_requests
         ]);
     }
 
-    public function updateStatus(Request $request, $id)
+    public function updateStatus(Request $request, RepairRequest $repairRequest)
     {
-        try {
-            $repairRequest = RepairRequest::findOrFail($id);
+        // Validate the request data
+        $request->validate([
+            'status' => 'required|string|max:255',
+        ]);
 
-            // Validate the status
-            $validatedData = $request->validate([
-                'status' => 'required|string|in:pending,accepted,in_progress,completed',
-            ]);
+        // Update the status
+        $repairRequest->status = $request->input('status');
+        $repairRequest->save();
 
-            // Update the status
-            $repairRequest->status = $validatedData['status'];
-            $repairRequest->save();
-
-            return response()->json(['message' => 'Status updated successfully.']);
-        } catch (\Exception $e) {
-            Log::error('Error updating status:', ['error' => $e->getMessage()]);
-            return response()->json(['message' => 'Failed to update status'], 500);
-        }
+        // Return a response (you can customize this as needed)
+        return response()->json(['message' => 'Status updated successfully']);
     }
 
     public function update(Request $request, RepairRequest $repairRequest)
